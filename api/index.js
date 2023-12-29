@@ -11,15 +11,20 @@ mongoose.connect(process.env.MONGO).then(()=> {
 }).catch((err)=>{
     console.log(err);
 })
+
 const app= express()
 app.use(express.json());
-app.use (cookieParser)
-app.listen(3000,()=>{
-    console.log ('server is running on port 3000!')
-});
+app.use (cookieParser())
+app.get('/test',(req,res)=>{
+    res.send('Hello World!');
+})
+
 app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter);
 
+app.listen(3000,()=>{
+    console.log ('server is running on port 3000!')
+});
 app.use ((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
     const message =err.message || 'internal Server Error'
@@ -29,3 +34,4 @@ app.use ((err,req,res,next)=>{
         message
     });
 });
+
